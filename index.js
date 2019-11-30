@@ -166,6 +166,7 @@ app.get("/api/deleteLogin", (req, res) => {
 app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) => {
     var file = {};
     var token = "";
+    console.log(req);
     try {
         file = req.file;
         token = req.body.token
@@ -175,14 +176,18 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
     }
 
     var user = "";
-    await models.token.findById(token, (err, res) => {
-        if(err || res == null) {
+    await models.token.findById(token, (err, doc) => {
+        console.log(token, doc);
+        if(err || doc == null) {
             res.send({status: "error", error: "invalid token"});
             return;
         }
         
-        user = res.name;
-    })
+        user = doc.name;
+    }).catch(err => {
+
+    });
+    if(!user) return;
 
     var fname, type = "";
     try {

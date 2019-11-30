@@ -8,7 +8,7 @@ function dataReceived(name, files) {
             .appendTo(list);
         var aaa = $('<a/>')
             .attr("href", `/api/getFile?token=${token}&id=${files[i]._id}`)
-            .text(files[i].name)
+            .text(files[i].name + "." + files[i].type)
             .appendTo(li);
     });
 }
