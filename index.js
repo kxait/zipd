@@ -137,7 +137,7 @@ app.post('/api/getLogin', parser, (req, res) => {
                 until: dateUntil,
                 ip: req.ip
             });
-            models.token.deleteMany({name: user}, (err) => {;});
+            //models.token.deleteMany({name: user}, (err) => {;});
             tok.save((err, doc) => {
                 if(err || doc == null) {
                     res.send({status: "error", error: "something wrong"});
@@ -187,9 +187,7 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
         }
         
         user = doc.name;
-    }).catch(err => {
-        console.log("await findbyid caught");
-    }).then(doc => {
+        
         if(!user) {
             console.log("findbyid user null");
             res.send({status: "error", error: "invalid token, user null"});
