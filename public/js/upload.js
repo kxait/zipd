@@ -18,8 +18,7 @@ $(() => {
             method: self[0].method,
             data: fd,
             processData: false,
-            contentType: false,
-            cache: false
+            contentType: false
         }).then(result => {
             if(result.status == "success") {
                 // you in!

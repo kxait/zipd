@@ -167,6 +167,7 @@ app.get("/api/deleteLogin", (req, res) => {
 });
 
 app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) => {
+    console.log("received upload request");
     var file = {};
     var token = "";
     try {
@@ -203,7 +204,7 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
 
     // limit size to 3mb here
 
-    res.send({status: "success", message: "file received, will sync soon, may not appear in list instantly"});
+    res.send({status: "success", message: size + "mb file received, will sync soon, may not appear in list instantly"});
 
     const readStream = createReadStream(req.file.path);
     const options = ({ filename: req.file.originalname, contentType: req.file.mimetype});
