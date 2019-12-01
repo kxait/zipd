@@ -85,20 +85,22 @@ app.get('/api/getFile', (req, res) => {
             models.file.findById(id)
                 .then(doc => {
                     const stream = Attachment.read({ _id: mongo.Types.ObjectId(doc.content) });
-                    res.type(doc.type);
-                    res.setHeader("Content-Disposition", `inline; filename="${doc.name + '.' + doc.type}"`);
+                    var sent = false;
                     stream.on('error', (err => {
-                        //res.send({status: "error", error: err})
-                        console.log("err", err);
+                        res.send({status: "error", error: err});
                     }));
                     stream.on('data', data => {
+                        if(!sent) {
+                            res.setHeader("Content-Disposition", `inline; filename="${doc.name + '.' + doc.type}"`);
+                            res.type(doc.type);
+                        }
+                        sent = true;
                         res.write(data);
                     });
                     stream.on('close', close => {
                         res.end();
                     });
 
-                    
                     return;
                 })
                 .catch(err => {
@@ -132,7 +134,8 @@ app.post('/api/getLogin', parser, (req, res) => {
             var tok = new models.token({
                 name: user,
                 when: dateNow,
-                until: dateUntil
+                until: dateUntil,
+                ip: req.ip
             });
             models.token.deleteMany({name: user}, (err) => {;});
             tok.save((err, doc) => {
@@ -166,7 +169,6 @@ app.get("/api/deleteLogin", (req, res) => {
 app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) => {
     var file = {};
     var token = "";
-    console.log(req);
     try {
         file = req.file;
         token = req.body.token
@@ -177,7 +179,6 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
 
     var user = "";
     await models.token.findById(token, (err, doc) => {
-        console.log(token, doc);
         if(err || doc == null) {
             res.send({status: "error", error: "invalid token"});
             return;
@@ -190,13 +191,19 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
     if(!user) return;
 
     var fname, type = "";
+    var size = 0;
     try {
-        var fname = req.file.originalname.match(/([a-zA-Z0-9]+)\.[a-zA-Z0-9]+/)[1];
-        var type = req.file.originalname.match(/[a-zA-Z0-9]+\.([a-zA-Z0-9]+)/)[1];
+        var fname = req.file.originalname.match(/([^.]+)\.[a-zA-Z0-9]+$/)[1];
+        var type = req.file.originalname.match(/[^.]+\.([a-zA-Z0-9]+)$/)[1];
+        var size = req.file.size / 1000000;
     }catch(e){
         res.send({status: "error", error: "invalid file name"});
         return;
     }
+
+    // limit size to 3mb here
+
+    res.send({status: "success", message: "file received, will sync soon, may not appear in list instantly"});
 
     const readStream = createReadStream(req.file.path);
     const options = ({ filename: req.file.originalname, contentType: req.file.mimetype});
@@ -206,16 +213,16 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
         return new Promise((resolve, reject) => {
             Attachment.write(options, readStream, (err, file) => {
                 if(err || file == null){
+                    console.error("couldn't send file " + req.file.originalname + " to gridfs");
                     reject(err);
                 }
                 id = file._id.toHexString();
-                console.log(err, file, id);
+                unlink(req.file.path, () => {});
+                console.log("sent file " + req.file.originalname + " to gridfs & unlinked old file");
                 resolve(id)
             })
         })
     })()
-
-    unlink(req.file.path, () => {});
 
     fileOdm = models.file({
         username: user,
@@ -225,12 +232,44 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
     });
     fileOdm.save((err, doc) => {
         if(err || doc == null) {
-            res.send({status: "error", error: "something is wrong"});
+            //res.send({status: "error", error: "something is wrong"});
             return;
         }
-        res.send({status: "success"});
+        //res.send({status: "success"});
     });
 })
+
+app.get("/api/deleteFile", (req, res) => {
+    var token = "";
+    var id = "";
+    try {
+        token = req.query.token;
+        id = req.query.id
+    }catch(e){
+        res.send({status: "error", error: "invalid request"});
+        return;
+    }
+
+    getToken(token)
+        .then(user => {
+            models.file.findOne({username: user, _id: id}, (err, doc) => {
+                if(err || doc == null) {
+                    res.send({status: "error", error: "invaid request!"});
+                    return;
+                }
+                var gridfsId = doc.content;
+                models.file.findByIdAndDelete({_id: id}, (err, doc) => {})
+                Attachment.unlink({_id: gridfsId}, error => {
+                    if(!error) res.send({status: "success"});
+                    else res.send({status: "error", error: error});
+                    return;
+                })
+            })
+        })
+        .catch(err => {
+            res.send({status: "error", error: err});
+        })
+});
 
 app.listen(port, () => {
     console.log(`haha-cloud successfully listening on port ${ port }`);

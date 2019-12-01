@@ -9,7 +9,7 @@ $(() => {
         var self = $('form');
         var file = $("#file");
         e.preventDefault();
-        $("span#message").html("");
+        $("span#message").html("sending file, do not close the page");
         var fd = new FormData();
         fd.append("file", file[0].files[0])
         fd.append("token", token);
@@ -24,7 +24,7 @@ $(() => {
             if(result.status == "success") {
                 // you in!
                 console.log(":)");
-                $("span#message").html("success");
+                $("span#message").html("success: " + result.message);
             }else{
                 $("span#message").html(`${result.status}: ${result.error}`);
             }
