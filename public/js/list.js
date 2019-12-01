@@ -35,21 +35,29 @@ function dataReceived(name, files) {
             .appendTo(li);
         var deleteFileLink = $('<a/>')
             .on("click", e => {
-                $.ajax({
-                    url: "/api/deleteFile",
-                    method: "get",
-                    data: {
-                        token: token,
-                        id: files[i]._id
-                    },
-                    success: (data, status, xhr) => {
-                        reloadList();
-                    },
-                    error: (xhr, status, error) => {
-                        console.log(this);
-                        alert("couldn't delete!");
-                    }
-                })
+                var self = e.target;
+                deleteFileLink.remove();
+                var newDelete = $("<a/>")
+                    .on("click", e => {
+                        $.ajax({
+                            url: "/api/deleteFile",
+                            method: "get",
+                            data: {
+                                token: token,
+                                id: files[i]._id
+                            },
+                            success: (data, status, xhr) => {
+                                reloadList();
+                            },
+                            error: (xhr, status, error) => {
+                                console.log(this);
+                                alert("couldn't delete!");
+                            }
+                        })
+                    })
+                    .text(" Are you sure?")
+                    .attr("href", "#")
+                    .appendTo(li);
             })
             .text(" Delete")
             .attr("href", "#")
