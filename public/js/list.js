@@ -22,7 +22,7 @@ function reloadList() {
 
 function dataReceived(name, files) {
     var token = document.cookie.match(/token=([a-zA-Z0-9]+)/)[1];
-    $("h1#username").html("hi " + name);
+    $("h1#username").html(name);
 
     var list = $("ul#files");
     list.empty();
@@ -51,7 +51,7 @@ function dataReceived(name, files) {
                     }
                 })
             })
-            .text(" >delete")
+            .text(" Delete")
             .attr("href", "#")
             .appendTo(li);
     });

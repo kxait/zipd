@@ -1,10 +1,24 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="js/common.js"></script>
-<script src="js/login.js"></script>
-<link rel="stylesheet" href="css/main.css">
-<form id="login" action="/api/getLogin" method="post">
-    name <input type="text" name="username"><br>
-    pass <input type="password" name="password"><br>
-    <button type="submit" id="login-button">login</button><br>
-    <span id="error" style="background-color: red; color: white;"></span>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/login.js"></script>
+        <link rel="stylesheet" href="css/global.css">
+        <link rel="stylesheet" href="css/login.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>KEK ERC</title>
+    </head>
+    <body>
+        <div id="login-container">
+            <img id="nsa" alt="nsa" src="img/nsc.png">
+            <form id="login" action="/api/getLogin" method="post">
+                <input type="text" name="username" placeholder="Name"><br>
+                <input type="password" name="password" placeholder="Password"><br>
+                <button type="submit" id="login-button">Login</button><br>
+                <span id="error" style="background-color: red; color: white;"></span>
+            </form>
+        </div>
+    </body>
+</html>
