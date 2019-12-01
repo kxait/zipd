@@ -28,7 +28,6 @@ $(() => {
                 };
                 return xhr;
             },
-            timeout: 60 * 1000
         }).then(result => {
             if(result.status == "success") {
                 // you in!
