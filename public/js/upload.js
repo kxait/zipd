@@ -18,7 +18,17 @@ $(() => {
             method: self[0].method,
             data: fd,
             processData: false,
-            contentType: false
+            contentType: false,
+            xhr: function () {
+                var xhr = $.ajaxSettings.xhr();
+                xhr.upload.onprogress = function (e) {
+                    if (e.lengthComputable) {
+                        $("span#message").html("sending file, do not close page " + (Math.round(e.loaded / e.total)*100 + "% progress"));
+                    }
+                };
+                return xhr;
+            },
+            timeout: 60 * 1000
         }).then(result => {
             if(result.status == "success") {
                 // you in!
