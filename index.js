@@ -192,6 +192,7 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
     });
     if(!user) {
         console.log("findbyid user null");
+        res.send({status: "error", error: "invalid token, user null"});
         return;
     }
 
