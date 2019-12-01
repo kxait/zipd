@@ -84,6 +84,10 @@ app.get('/api/getFile', (req, res) => {
         .then(user => {
             models.file.findById(id)
                 .then(doc => {
+                    if(doc.username != user) {
+                        res.send({status: "error", error: "invalid token!!"});
+                        return;
+                    }
                     const stream = Attachment.read({ _id: mongo.Types.ObjectId(doc.content) });
                     var sent = false;
                     stream.on('error', (err => {
