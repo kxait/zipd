@@ -180,6 +180,7 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
 
     var user = "";
     await models.token.findById(token, (err, doc) => {
+        console.log("entered await findbyid");
         if(err || doc == null) {
             res.send({status: "error", error: "invalid token"});
             return;
@@ -187,9 +188,12 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
         
         user = doc.name;
     }).catch(err => {
-
+        console.log("await findbyid caught");
     });
-    if(!user) return;
+    if(!user) {
+        console.log("findbyid user null");
+        return;
+    }
 
     var fname, type = "";
     var size = 0;
