@@ -179,9 +179,9 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
     }
 
     var user = "";
-    await models.token.findById(token, (err, doc) => {
+    models.token.findById(token, (err, doc) => {
         console.log("entered await findbyid");
-        if(err || doc == null) {
+        if(err || doc == null || doc.name == null) {
             res.send({status: "error", error: "invalid token"});
             return;
         }
@@ -189,34 +189,33 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
         user = doc.name;
     }).catch(err => {
         console.log("await findbyid caught");
-    });
-    if(!user) {
-        console.log("findbyid user null");
-        res.send({status: "error", error: "invalid token, user null"});
-        return;
-    }
+    }).then(doc => {
+        if(!user) {
+            console.log("findbyid user null");
+            res.send({status: "error", error: "invalid token, user null"});
+            return;
+        }
 
-    var fname, type = "";
-    var size = 0;
-    try {
-        var fname = req.file.originalname.match(/([^.]+)\.[a-zA-Z0-9]+$/)[1];
-        var type = req.file.originalname.match(/[^.]+\.([a-zA-Z0-9]+)$/)[1];
-        var size = req.file.size / 1000000;
-    }catch(e){
-        res.send({status: "error", error: "invalid file name"});
-        return;
-    }
+        var fname, type = "";
+        var size = 0;
+        try {
+            var fname = req.file.originalname.match(/([^.]+)\.[a-zA-Z0-9]+$/)[1];
+            var type = req.file.originalname.match(/[^.]+\.([a-zA-Z0-9]+)$/)[1];
+            var size = req.file.size / 1000000;
+        }catch(e){
+            res.send({status: "error", error: "invalid file name"});
+            return;
+        }
 
-    // limit size to 3mb here
+        // limit size to 3mb here
 
-    res.send({status: "success", message: size + "mb file received, will sync soon, may not appear in list instantly"});
+        res.send({status: "success", message: size + "mb file received, will sync soon, may not appear in list instantly"});
 
-    const readStream = createReadStream(req.file.path);
-    const options = ({ filename: req.file.originalname, contentType: req.file.mimetype});
-    
-    var id = "";
-    await (function _() {
-        return new Promise((resolve, reject) => {
+        const readStream = createReadStream(req.file.path);
+        const options = ({ filename: req.file.originalname, contentType: req.file.mimetype});
+        
+        var id = "";
+        new Promise((resolve, reject) => {
             Attachment.write(options, readStream, (err, file) => {
                 if(err || file == null){
                     console.error("couldn't send file " + req.file.originalname + " to gridfs");
@@ -227,21 +226,26 @@ app.post("/api/uploadFile", [upload.single("file"), parser], async (req, res) =>
                 console.log("sent file " + req.file.originalname + " to gridfs & unlinked old file");
                 resolve(id)
             })
-        })
-    })()
+        }).then(id => {
 
-    fileOdm = models.file({
-        username: user,
-        name: fname,
-        type: type,
-        content: id
-    });
-    fileOdm.save((err, doc) => {
-        if(err || doc == null) {
-            //res.send({status: "error", error: "something is wrong"});
-            return;
-        }
-        //res.send({status: "success"});
+            fileOdm = models.file({
+                username: user,
+                name: fname,
+                type: type,
+                content: id
+            });
+            fileOdm.save((err, doc) => {
+                if(err || doc == null) {
+                    console.error("error in fileOdm.save: err or doc null");
+                    //res.send({status: "error", error: "something is wrong"});
+                    return;
+                }
+                console.log("fileOdm save success");
+                //res.send({status: "success"});
+            });
+        }).catch(e => {
+            console.error("attachment promise fail");
+        });
     });
 })
 
