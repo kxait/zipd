@@ -28,6 +28,7 @@ function getUsers(token) {
                     .addClass("uname")
                     .html(res.users[i].name)
                     .addClass(res.users[i].role == "admin" ? "admin" : "")
+                    .addClass(res.users[i].role == "shrek" ? "shrek" : "")
                     .appendTo(liElem);
                 var changePassButton = $("<a/>")
                     .html("Change password")
