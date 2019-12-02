@@ -4,12 +4,15 @@ $(() => {
         e.preventDefault();
         $("span#error").html("");
         var pass = $('input#pass').val();
-        $('input#pass').val(md5(pass));
+        var user = $('input#name').val()
         var form_data = self.serialize();
         $.ajax({
             url: self[0].action,
             method: self[0].method,
-            data: form_data
+            data: {
+                username: user,
+                password: md5(pass)
+            }
         }).then(result => {
             if(result.status == "success") {
                 // you in!
