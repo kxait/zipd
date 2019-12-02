@@ -53,11 +53,11 @@ function dataReceived(name, files) {
                             }
                         })
                     })
-                    .text(" Are you sure?")
+                    .text("Are you sure?")
                     .attr("href", "#")
                     .appendTo(li);
             })
-            .text(" Delete")
+            .text("Delete")
             .attr("href", "#")
             .appendTo(li);
     });
