@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('globalHead') %>
+        <link rel="stylesheet" href="/css/admin.css">
+        <script src="/js/admin.js"></script>
+        <script src="/js/md5.min.js"></script>
+    </head>
+    <body>
+        <%- include('header') %>
+        <main>
+            <h1>Admin</h1>
+            <h3>Add user</h3>
+            <form action="/api/admin/addUser" method="post" id="newUser">
+                <input type="text" name="name" id="newUser-name" placeholder="Username">
+                <input type="text" name="pass" id="newUser-pass" placeholder="Password">
+                <input type="submit" value="Add User">
+            </form>
+            <span id="newUser-message"></span>
+            <h3>Manage users</h3>
+            <ul id="users">
+            </ul>
+            <span id="users-message"></span>
+            <h3>Storage</h3>
+            <p id="storage-value">23MB / 512MB</p>
+            <progress id="storage-taken" max="100" value="4.49"></progress>
+        </main>
+    </body>
+</html>

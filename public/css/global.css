@@ -49,6 +49,14 @@ a, input[type="submit"] {
     border: none;
 }
 
+a.uname {
+    background-color: darkblue;
+}
+
+a.uname.admin {
+    background-color: purple;
+}
+
 a:hover {
     background-color: #555;
 }

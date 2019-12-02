@@ -57,21 +57,39 @@ app.get('/changePass', (req, res) => {
     res.render("changePass.ejs");
 })
 
+app.get('/admin', (req, res) => {
+    res.render("admin.ejs");
+})
+
 /* API */
 function registerApi() {
+    /* NORMAN */
     app.get('/api/getUserFiles', require('./lib/api/getUserFiles.js'));
 
     app.get('/api/getFile', require('./lib/api/getFile.js')(Attachment));
 
-    app.post('/api/getLogin', parser, require('./lib/api/getLogin.js'));
-
     app.get("/api/deleteLogin", require('./lib/api/deleteLogin.js'));
+    
+    app.get("/api/deleteFile", require('./lib/api/deleteFile.js')(Attachment));
+    
+    app.get("/api/getUserRole", require("./lib/api/getUserRole.js"));
+
+    app.post("/api/changePass", parser, require('./lib/api/changePass.js'));
+
+    app.post('/api/getLogin', parser, require('./lib/api/getLogin.js'));
 
     app.post("/api/uploadFile", [upload.single("file"), parser], require('./lib/api/uploadFile.js')(Attachment))
 
-    app.get("/api/deleteFile", require('./lib/api/deleteFile.js')(Attachment));
+    /* ADMIN */
+    app.post("/api/admin/addUser", parser, require("./lib/api/admin/addUser.js"));
+    
+    app.get("/api/admin/deleteUser", require("./lib/api/admin/deleteUser.js"));
+    
+    //app.post("/api/admin/setUserPassword", parser, require("./lib/api/admin/setUserPassword.js"));
+    
+    app.get("/api/admin/getUserList", require("./lib/api/admin/getUserList.js"));
 
-    app.get("/api/changePass", require('./lib/api/changePass.js'));
+    //app.get("/api/admin/getStorage", require("./lib/api/admin/getStorage.js"));
 }
 
 function deleteOldTokens() {
