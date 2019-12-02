@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="js/md5.min.js"></script>
         <script src="js/common.js"></script>
         <script src="js/login.js"></script>
         <link rel="stylesheet" href="css/global.css">
@@ -15,7 +16,7 @@
             <img id="nsa" alt="nsa" src="img/nsc.png">
             <form id="login" action="/api/getLogin" method="post">
                 <input type="text" name="username" placeholder="Name"><br>
-                <input type="password" name="password" placeholder="Password"><br>
+                <input type="password" name="password" placeholder="Password" id="pass"><br>
                 <button type="submit" id="login-button">Login</button><br>
                 <span id="error" style="background-color: red; color: white;"></span>
             </form>

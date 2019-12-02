@@ -3,6 +3,8 @@ $(() => {
         var self = $('form#login');
         e.preventDefault();
         $("span#error").html("");
+        var pass = $('input#pass').val();
+        $('input#pass').val(md5(pass));
         var form_data = self.serialize();
         $.ajax({
             url: self[0].action,
