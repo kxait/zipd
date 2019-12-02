@@ -1,4 +1,7 @@
 $(() => {
+    $("img#nsa").on("click", e => {
+        e.target.classList = ['spin'];
+    })
     $('form#login').on('submit', e => {
         var self = $('form#login');
         e.preventDefault();

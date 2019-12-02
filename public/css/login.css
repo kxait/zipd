@@ -29,7 +29,12 @@
     border-radius: 5px;
     background-color: #555;
     border: none;
-    color: gray;
+    color: #ddd;
+}
+
+#login-container button:hover {
+    background-color: #666;
+    cursor: pointer;
 }
 
 #login-container img#nsa {
@@ -37,7 +42,7 @@
     width: 100%;
 }
 
-#login-container img#nsa:hover {
+#login-container img#nsa.spin {
     
     animation:spin 7s linear infinite;
 }
