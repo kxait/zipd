@@ -1,24 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="/js/common.js"></script>
-        <script src="/js/upload.js"></script>
-        <link rel="stylesheet" href="/css/global.css">
+        <%- include('globalHead') %>
         <link rel="stylesheet" href="/css/upload.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="utf-8">
-        <title>KEK ERC</title>
+        <script src="/js/upload.js"></script>
     </head>
     <body>
-        <header>
-            <h1>Ethics Research Center</h1>
-            <nav>
-                <a href="/list" id="list">Files list</a>
-                <a href="/list/upload" id="upload">Upload files</a>
-                <a href="#" id="logout">Log out</a>
-            </nav>
-        </header>
+        <%- include('header') %>
         <main>
             <form action="/api/uploadFile" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" id="file"><br>

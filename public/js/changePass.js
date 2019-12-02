@@ -1,10 +1,4 @@
 $(() => {
-    var token = getToken();
-    if(token == null) {
-        window.location = "/";
-        return;
-    }
-
     $('form').on('submit', e => {
         e.preventDefault();
         $("span#message").html("changing password...");
@@ -38,9 +32,5 @@ $(() => {
         }).fail((xhr, status, error) => {
             $("span#error").html(`critical error: ${status}, ${error}`);
         })
-    })
-
-    $("a#logout").on("click", e => {
-        logout();
     })
 })

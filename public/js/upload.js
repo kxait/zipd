@@ -1,10 +1,4 @@
 $(() => {
-    var token = getToken();
-    if(token == null) {
-        window.location = "/";
-        return;
-    }
-
     $('form').on('submit', e => {
         var self = $('form');
         var file = $("#file");
@@ -40,10 +34,4 @@ $(() => {
             $("span#error").html(`critical error: ${status}, ${error}`);
         })
     })
-
-    $("a#logout").on("click", e => {
-        logout();
-    })
-
-
 })

@@ -1,5 +1,3 @@
-var token = "";
-
 function reloadList() {
     $.ajax({
         url: "/api/getUserFiles",
@@ -66,17 +64,7 @@ function dataReceived(name, files) {
 }
 
 $(() => {
-    token = getToken();
-    if(token == null) {
-        window.location = "/";
-        return;
-    }
-
     reloadList();
-
-    $("a#logout").on("click", e => {
-        logout();
-    });
     $("a#refresh").on("click", e => {
         reloadList();
     });

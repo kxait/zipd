@@ -25,6 +25,14 @@ header {
     margin: 0 auto;
 }
 
+header h1 {
+    margin-top: 0px;
+}
+
+header p {
+    margin-bottom: 0px;
+}
+
 main h1, main h2 {
     margin-top: 0;
 }
