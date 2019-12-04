@@ -34,6 +34,12 @@ function dataReceived(name, files) {
         var uploadedDate = $('<a/>')
             .text(files[i].uploaded ? new Date(files[i].uploaded).toLocaleString() : "No uploaded data")
             .appendTo(li);
+        if(files[i].tag != "") {
+            var tag = $('<a/>')
+                .text(files[i].tag)
+                .addClass("tag")
+                .appendTo(li);
+        }
         var deleteFileLink = $('<a/>')
             .on("click", e => {
                 if(!confirm("Really delete file " + files[i].name + "?")) return;

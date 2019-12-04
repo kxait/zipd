@@ -1,15 +1,22 @@
 $(() => {
     $("#file").change(() => {
-        $("span#message").html("ready");
+        $("span#message").html("Ready to send");
     })
     $('form').on('submit', e => {
         var self = $('form');
         var file = $("#file");
+        var fileTag = $("#name").val();
         e.preventDefault();
-        $("span#message").html("sending file, do not close the page");
+        $("span#message").html("Sending file, do not close this page.");
+
         var fd = new FormData();
-        fd.append("file", file[0].files[0])
+        var fileData = file[0].files;
+        fd.append("tag", fileTag);
+        for(i in fileData) {
+            fd.append("files[]", fileData[i])
+        }
         fd.append("token", token);
+
         $.ajax({
             url: self[0].action,
             method: self[0].method,
@@ -20,7 +27,7 @@ $(() => {
                 var xhr = $.ajaxSettings.xhr();
                 xhr.upload.onprogress = function (e) {
                     if (e.lengthComputable) {
-                        $("span#message").html("sending file, do not close page " + (Math.round(e.loaded / e.total)*100 + "% progress"));
+                        $("span#message").html("File sending in progress, do not close this page. <br>Progress: " + (Math.round(e.loaded / e.total)*100 + "%"));
                     }
                 };
                 return xhr;
@@ -29,7 +36,7 @@ $(() => {
             if(result.status == "success") {
                 // you in!
                 console.log(":)");
-                $("span#message").html("success: " + result.message);
+                $("span#message").html("File sent successfully: " + result.message);
             }else{
                 $("span#message").html(`${result.status}: ${result.error}`);
             }

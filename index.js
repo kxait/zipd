@@ -84,7 +84,7 @@ function registerApi() {
 
     app.post('/api/getLogin', parser, require('./lib/api/getLogin.js'));
 
-    app.post("/api/uploadFile", [upload.single("file"), parser], require('./lib/api/uploadFile.js')(Attachment))
+    app.post("/api/uploadFile", [upload.array("files[]"), parser], require('./lib/api/uploadFile.js')(Attachment))
 
     /* ADMIN */
     app.post("/api/admin/addUser", parser, require("./lib/api/admin/addUser.js"));
@@ -110,7 +110,7 @@ function deleteOldTokens() {
 }
 
 app.listen(port, () => {
-    // delete old tokens every hour
-    setInterval(deleteOldTokens, 1000 * 3600);
+    // delete old tokens every minute
+    setInterval(deleteOldTokens, 1000 * 60);
     console.log(`zipdisquette successfully listening on port ${ port }`);
 })
