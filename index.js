@@ -20,7 +20,7 @@ const bodyParser = require('body-parser');
 const parser = bodyParser.urlencoded({ extended: false });
 
 /* CONNECT TO MONGO */
-const connStr = "mongodb+srv://admin:admin@haha-cloud-fs8by.mongodb.net/hahacloud?retryWrites=true&w=majority"
+const connStr = "mongodb+srv://admin:6ezXYrlUnh3kmfoy@haha-cloud-fs8by.mongodb.net/hahacloud?retryWrites=true&w=majority"
 mongo.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true});
 mongo.connection.once("error", console.error.bind(console, "what the fuck "));
 
