@@ -1,4 +1,6 @@
 function reloadList() {
+    var list = $("ul#files");
+    list.empty();
     $.ajax({
         url: "/api/getUserFiles",
         method: "get",
@@ -23,7 +25,6 @@ function dataReceived(name, files) {
     $("h1#username").html(name);
 
     var list = $("ul#files");
-    list.empty();
     $.each(files, i => {
         var li = $('<li/>')
             .appendTo(list);
