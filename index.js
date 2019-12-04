@@ -20,9 +20,16 @@ const bodyParser = require('body-parser');
 const parser = bodyParser.urlencoded({ extended: false });
 
 /* CONNECT TO MONGO */
-const connStr = "mongodb+srv://admin:6ezXYrlUnh3kmfoy@haha-cloud-fs8by.mongodb.net/hahacloud?retryWrites=true&w=majority"
+const connStr = process.env.mongo
+if(!connStr){
+    console.error("set environment variable mongo to connect");
+    process.exit(-1);
+}
 mongo.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true});
-mongo.connection.once("error", console.error.bind(console, "what the fuck "));
+mongo.connection.once("error", e => {
+    console.error("couldnt connect to mongo with url " + connStr, e);
+    process.exit(-2);
+});
 
 /* GRIDFS CONFIG */
 var Attachment = {};
