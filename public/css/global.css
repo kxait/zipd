@@ -16,6 +16,7 @@ main {
     margin-top: 50px;
     color: white;
     border-radius: 3px;
+    margin-bottom: 50px;
 }
 
 header {
@@ -37,7 +38,7 @@ main h1, main h2 {
     margin-top: 0;
 }
 
-a, input[type="submit"] {
+a, input[type="submit"], button, input[type="button"] {
     display: inline-block;
     background-color: #444;
     padding: 5px;
@@ -47,6 +48,9 @@ a, input[type="submit"] {
     color: #ddd;
     text-decoration: none;
     border: none;
+}
+button, input[type="submit"], input[type="button"] {
+    padding: 7px;
 }
 
 a.uname {

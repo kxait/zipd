@@ -21,54 +21,89 @@ function getUsers(token) {
         if(res.status == "success") {
             var list = $("ul#users")
             $.each(res.users, i => {
-                console.log(res.users[i].name, res.users[i].role);
                 var liElem = $("<li/>")
                     .appendTo(list);
                 var uname = $("<a/>")
                     .addClass("uname")
                     .html(res.users[i].name)
                     .addClass(res.users[i].role == "admin" ? "admin" : "")
-                    .addClass(res.users[i].role == "shrek" ? "shrek" : "")
                     .appendTo(liElem);
                 var changePassButton = $("<a/>")
                     .html("Change password")
                     .on("click", e => {
-                        // change user pass here
+                        var newPass = prompt("New password for user " + res.users[i].name + ", this will delete all their tokens");
+                        if(newPass == "" || !newPass) return;
+                        $.ajax({
+                            url: "/api/admin/setUserPassword",
+                            method: "post",
+                            data: {
+                                name: res.users[i].name,
+                                token: token,
+                                password: md5(newPass)
+                            },
+                            success: (data, status, xhr) => {
+                                $("span#users-message").html("Changed password: " + JSON.stringify(data));
+                            },
+                            error: (xhr, status, error) => {
+                                $("span#users-message").html("error:" , error);
+                            }
+                        })
                     })
                     .appendTo(liElem);
                 var deleteButton = $("<a/>")
                     .html("Drop")
                     .on("click", e => {
-                        var self = e.target;
-                        deleteButton.remove();
-                        var newDelete = $("<a/>")
-                            .on("click", e => {
-                                $.ajax({
-                                    url: "/api/admin/deleteUser",
-                                    method: "get",
-                                    data: {
-                                        token: token,
-                                        name: res.users[i].name
-                                    },
-                                    success: (data, status, xhr) => {
-                                        $("span#users-message").html("Deleted");
-                                        $("ul#users").empty();
-                                        getUsers(token);
-                                    },
-                                    error: (xhr, status, error) => {
-                                        console.log(status, error);
-                                    }
-                                })
-                            })
-                            .text("Are you sure?")
-                            .attr("href", "#")
-                            .appendTo(liElem);
+                        if(!confirm("Really delete user " + res.users[i].name + "?")) return;
+                        $.ajax({
+                            url: "/api/admin/deleteUser",
+                            method: "get",
+                            data: {
+                                token: token,
+                                name: res.users[i].name
+                            },
+                            success: (data, status, xhr) => {
+                                if(data.status == "success")
+                                    $("span#users-message").html("Deleted");
+                                else
+                                    $("span#users-message").html(JSON.stringify(data));
+                                $("ul#users").empty();
+                                getUsers(token);
+                            },
+                            error: (xhr, status, error) => {
+                                console.log(status, error);
+                                $("span#users-message").html("error: " + error);
+                                $("ul#users").empty();
+                                getUsers(token);
+                            }
+                        })
                     })
                     .appendTo(liElem);
                 var wipeButton = $("<a/>")
                     .html("Wipe")
                     .on("click", e => {
-                        // wipe
+                        if(!confirm("Really wipe user " + res.users[i].name + "?")) return;
+                        $.ajax({
+                            url: "/api/admin/wipeUser",
+                            method: "get",
+                            data: {
+                                token: token,
+                                name: res.users[i].name
+                            },
+                            success: (data, status, xhr) => {
+                                if(data.status == "success")
+                                    $("span#users-message").html("Wiped " + data.filesDeleted);
+                                else
+                                    $("span#users-message").html(JSON.stringify(data));
+                                $("ul#users").empty();
+                                getUsers(token);
+                            },
+                            error: (xhr, status, error) => {
+                                console.log(status, error);
+                                $("span#users-message").html("error: " + error);
+                                $("ul#users").empty();
+                                getUsers(token);
+                            }
+                        })
                     })
                     .appendTo(liElem);
             })
@@ -120,4 +155,8 @@ $(() => {
 
     /* LOAD USERS LIST */
     getUsers(token);
+
+    $("#popup").on("click", e => {
+
+    })
 });

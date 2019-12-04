@@ -1,4 +1,7 @@
 $(() => {
+    $("#file").change(() => {
+        $("span#message").html("ready");
+    })
     $('form').on('submit', e => {
         var self = $('form');
         var file = $("#file");

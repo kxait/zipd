@@ -38,22 +38,27 @@
 }
 
 #login-container #logo-container {
-    
-    background-image: url("/img/nscBare.png");
+    /*
+    background-image: url("/img/logo.jpg");
     background-repeat: no-repeat;
     background-size: contain;
+    */
 }
+
 
 #login-container img#nsa {
     margin-bottom: 20px;
-    animation:spin 7s linear infinite;
+    border-radius: 5px;
     width: 100%;
 }
 
-#login-container img#nsa.spin {
+/*
+#login-container img.shrek {
+    animation: spin 3s linear infinite;
 }
 
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+*/
 
 #login-container span#error {
     margin: 5px;

@@ -31,31 +31,27 @@ function dataReceived(name, files) {
             .attr("href", `/api/getFile?token=${token}&id=${files[i]._id}`)
             .text(files[i].name + "." + files[i].type)
             .appendTo(li);
+        var uploadedDate = $('<a/>')
+            .text(files[i].uploaded ? new Date(files[i].uploaded).toLocaleString() : "No uploaded data")
+            .appendTo(li);
         var deleteFileLink = $('<a/>')
             .on("click", e => {
-                var self = e.target;
-                deleteFileLink.remove();
-                var newDelete = $("<a/>")
-                    .on("click", e => {
-                        $.ajax({
-                            url: "/api/deleteFile",
-                            method: "get",
-                            data: {
-                                token: token,
-                                id: files[i]._id
-                            },
-                            success: (data, status, xhr) => {
-                                reloadList();
-                            },
-                            error: (xhr, status, error) => {
-                                console.log(this);
-                                alert("couldn't delete!");
-                            }
-                        })
-                    })
-                    .text("Are you sure?")
-                    .attr("href", "#")
-                    .appendTo(li);
+                if(!confirm("Really delete file " + files[i].name + "?")) return;
+                $.ajax({
+                    url: "/api/deleteFile",
+                    method: "get",
+                    data: {
+                        token: token,
+                        id: files[i]._id
+                    },
+                    success: (data, status, xhr) => {
+                        reloadList();
+                    },
+                    error: (xhr, status, error) => {
+                        console.log(this);
+                        alert("couldn't delete!");
+                    }
+                })
             })
             .text("Delete")
             .attr("href", "#")

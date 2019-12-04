@@ -17,13 +17,12 @@ var upload = multer({ dest: 'uploads/' });
 
 /* FOR POST */
 const bodyParser = require('body-parser');
+const parser = bodyParser.urlencoded({ extended: false });
 
 /* CONNECT TO MONGO */
 const connStr = "mongodb+srv://admin:admin@haha-cloud-fs8by.mongodb.net/hahacloud?retryWrites=true&w=majority"
 mongo.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true});
 mongo.connection.once("error", console.error.bind(console, "what the fuck "));
-
-const parser = bodyParser.urlencoded({ extended: false });
 
 /* GRIDFS CONFIG */
 var Attachment = {};
@@ -85,7 +84,9 @@ function registerApi() {
     
     app.get("/api/admin/deleteUser", require("./lib/api/admin/deleteUser.js"));
     
-    //app.post("/api/admin/setUserPassword", parser, require("./lib/api/admin/setUserPassword.js"));
+    app.get("/api/admin/wipeUser", require("./lib/api/admin/wipeUser.js")(Attachment));
+    
+    app.post("/api/admin/setUserPassword", parser, require("./lib/api/admin/setUserPassword.js"));
     
     app.get("/api/admin/getUserList", require("./lib/api/admin/getUserList.js"));
 
@@ -104,5 +105,5 @@ function deleteOldTokens() {
 app.listen(port, () => {
     // delete old tokens every hour
     setInterval(deleteOldTokens, 1000 * 3600);
-    console.log(`haha-cloud successfully listening on port ${ port }`);
+    console.log(`zipdisquette successfully listening on port ${ port }`);
 })

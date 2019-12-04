@@ -25,13 +25,14 @@ $(() => {
                 window.location = "/list";
             }else if(result.status == "error"){
                 $("span#error").html(`${result.status}: ${result.error}`);
-            }else if(result.status == "shrek") {
+            }/*else if(result.status == "shrek") {
                 $("#login-container").empty();
                 var shrek = $("<img/>")
                     .attr("src", "/img/shrek.jpg")
                     .attr("style", "width: 100%;")
+                    .addClass("shrek")
                     .appendTo($("#login-container"));
-            }
+            }*/
         }).fail((xhr, status, error) => {
             $("span#error").html(`critical error: ${status}, ${error}`);
         })
