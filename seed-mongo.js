@@ -1,6 +1,7 @@
 const models = require('./lib/models.js');
 const mongo = require('mongoose');
 const md5 = require("blueimp-md5");
+const { createId } = require("./lib/common.js");
 
 const connStr = process.env.mongo
 if(!connStr){
@@ -15,7 +16,7 @@ mongo.connection.once("error", e => {
 });
 mongo.connection.once("open", () => {
     console.log("connected to mongoDB, adding new user with credentials admin:admin to admins list");
-    models.user.insertMany([{name: "admin", pass: md5("admin"), role: "admin"}], (err, doc) => {
+    models.user.insertMany([{name: "admin", pass: createId("admin"), role: "admin"}], (err, doc) => {
         if(err || doc == null) {
             console.error("couldn't add new user");
             exit(-2);
