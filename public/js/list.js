@@ -29,7 +29,7 @@ function dataReceived(name, files) {
         var li = $('<li/>')
             .appendTo(list);
         var getFileLink = $('<a/>')
-            .attr("href", `/api/getFile?token=${token}&id=${files[i]._id}`)
+            .attr("href", `/api/getFile?token=${token}&id=${files[i].secuId}`)
             .text(files[i].name + "." + files[i].type)
             .appendTo(li);
         var uploadedDate = $('<a/>')

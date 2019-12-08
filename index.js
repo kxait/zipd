@@ -98,6 +98,8 @@ function registerApi() {
     app.get("/api/admin/getUserList", require("./lib/api/admin/getUserList.js"));
 
     //app.get("/api/admin/getStorage", require("./lib/api/admin/getStorage.js"));
+
+    app.get("/api/admin/filefix", require("./lib/api/admin/filefix.js"));
 }
 
 function deleteOldTokens() {

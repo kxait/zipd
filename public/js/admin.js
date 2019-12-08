@@ -156,7 +156,15 @@ $(() => {
     /* LOAD USERS LIST */
     getUsers(token);
 
-    $("#popup").on("click", e => {
-
+    $("#filefix").on("click", e => {
+        $.ajax({
+            url: "/api/admin/filefix",
+            method: "get",
+            data: {
+                token: token
+            }
+        }).done((data) => {
+            console.log(data);
+        });
     })
 });

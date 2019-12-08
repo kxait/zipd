@@ -1,15 +1,17 @@
 {
   "name": "zipdisquette",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "file hosting cloud in node and mongo",
   "main": "index.js",
   "scripts": {
+    "seed": "node seed-mongo.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
   "author": "0kxait@gmail.com",
   "license": "GPLv3",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "blueimp-md5": "^2.12.0",
     "body-parser": "^1.19.0",
     "ejs": "^3.0.1",
