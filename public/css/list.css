@@ -1,1 +1,15 @@
 /* LIST */
+
+#files.gallery {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#files.gallery span {
+    display: block;
+}
+
+.folders {
+    margin-top: 30px;
+    margin-left: 30px;
+}

@@ -10,9 +10,12 @@
         <%- include('header') %>
         <main>
             <h1 id="username">Loading...</h1>
-            <a id="gallery" href="#">View gallery</a>
+            <h3 id="folderName"></h3><br>
+            <a id="folders" href="#" onclick="enterFolder('');">View folders</a>
+            <a id="gallery" href="#" onclick="setMode('gallery')">View gallery</a>
+            <a id="list" href="#" onclick="setMode('list')">View list</a>
             <a href="#" id="refresh">Refresh</a>
-            <ul id="files"></ul>
+            <div id="files"></div>
         </main>
     </body>
 </html>

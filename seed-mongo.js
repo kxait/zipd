@@ -24,4 +24,5 @@ mongo.connection.once("open", () => {
         console.log("added new user, exiting");
         exit(0);
     });
+    
 })
