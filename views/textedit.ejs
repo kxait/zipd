@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include('globalHead') %>
+        <link rel="stylesheet" href="/css/textedit.css">
+        <script src="/js/textedit.js"></script>
+    </head>
+    <body>
+        <%- include('header') %>
+        <main>
+            <h3><span id="fname"></span></h3>
+            <textarea id="area"></textarea>
+            <br>
+            <span id="message"></span>
+            <div id="buttons">
+                <a id="save">Save</a>
+                <a id="save-as">Save as</a>
+                <a id="cancel">Cancel</a>
+                <a id="font-smaller">Font -</a>
+                <a id="font-bigger">Font +</a>
+                <br>
+                <input type="checkbox"> Autosave 
+            </div>
+        </main>
+    </body>
+</html>

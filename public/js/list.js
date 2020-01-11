@@ -112,13 +112,14 @@ function generateFilesList(filesList, dom, folder) {
         .appendTo(li);
         var uploadedDate = $('<a/>')
         .text(filesList[i].uploaded ? new Date(filesList[i].uploaded).toLocaleString() : "No uploaded data")
+        .on("click", (ev) => {
+            ev.target.innerText = filesList[i].secuId;
+        })
         .appendTo(li);
-        if(filesList[i].tag != "") {
-            var tag = $('<a/>')
-            .text(filesList[i].tag)
-            .addClass("tag")
-            .appendTo(li);
-        }
+        var editLink = $('<a/>')
+        .text("Edit")
+        .attr("href", `/textedit?fid=${filesList[i].secuId}`)
+        .appendTo(li);
         var deleteFileLink = $('<a/>')
         .on("click", e => {
             if(!confirm("Really delete file " + filesList[i].name + "?")) return;
@@ -127,10 +128,14 @@ function generateFilesList(filesList, dom, folder) {
                 method: "get",
                 data: {
                     token: token,
-                    id: filesList[i]._id
+                    id: filesList[i].secuId
                 },
                 success: (data, status, xhr) => {
-                    reloadList();
+                    if(data.status == "error") {
+                        alert("couldn't delete! " + data.error);
+                    }else{
+                        reloadList();
+                    }
                 },
                 error: (xhr, status, error) => {
                     console.log(this);

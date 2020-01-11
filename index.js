@@ -67,6 +67,10 @@ app.get('/admin', (req, res) => {
     res.render("admin.ejs");
 })
 
+app.get('/textedit', (req, res) => {
+    res.render("textedit.ejs");
+})
+
 /* API */
 function registerApi() {
     /* NORMAN */
@@ -87,6 +91,8 @@ function registerApi() {
     app.post('/api/getLogin', parser, require('./lib/api/getLogin.js'));
 
     app.post("/api/uploadFile", [upload.array("files[]"), parser], require('./lib/api/uploadFile.js')(Attachment))
+
+    app.post("/api/uploadSingleFile", [upload.array("files[]"), parser], require('./lib/api/uploadSingleFile.js')(Attachment));
 
     /* ADMIN */
     app.post("/api/admin/addUser", parser, require("./lib/api/admin/addUser.js"));

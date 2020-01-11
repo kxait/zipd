@@ -1,0 +1,14 @@
+main textarea#area {
+    width: calc(100% - 15px);
+    height: 60vh;
+    padding: 5px;
+    background-color: transparent;
+    color: #ddd;
+    border: 2px solid #ddd;
+    font-size: 12px;
+    resize: none;
+}
+
+h3 {
+    margin-top: 0;
+}
