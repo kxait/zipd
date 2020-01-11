@@ -99,13 +99,17 @@ function registerApi() {
     
     app.get("/api/admin/getUserList", require("./lib/api/admin/getUserList.js"));
 
+    app.get("/api/admin/getTokens", require("./lib/api/admin/getTokens.js"));
+
+    app.get("/api/admin/getGets", require("./lib/api/admin/getGets.js"));
+
     //app.get("/api/admin/getStorage", require("./lib/api/admin/getStorage.js"));
 
     app.get("/api/admin/filefix", require("./lib/api/admin/filefix.js"));
 }
 
 function deleteOldTokens() {
-    models.token.deleteMany({until: { $lt: new Date() }}, (err) => {
+    models.token.updateMany({until: { $lt: new Date() }}, {active: false}, (err) => {
         if(err)
             console.error("couldn't delete old tokens: ", err);
         else

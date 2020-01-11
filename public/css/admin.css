@@ -3,3 +3,11 @@ progress#storage-taken {
     border-radius: 0px;
     width: 100%;
 }
+
+#bottom-flex {
+    display: flex
+}
+
+#bottom-flex .right, #bottom-flex .left {
+    width: 50%;
+}

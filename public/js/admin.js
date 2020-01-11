@@ -1,5 +1,7 @@
 const maxStorage = 512;
 
+var token = "";
+
 function setStorage(value) {
     if(isNaN(value) || value < 0 || value > 100) {
         return "er";
@@ -7,6 +9,58 @@ function setStorage(value) {
     var percent = (value/maxStorage) * 100;
     $("p#storage-value").html(`${value}MB out of ${maxStorage}MB taken`);
     $("progress#storage-taken").attr("value", percent);
+}
+
+function populateTokensList(tokens, dom) {
+    var ul = $("<ul/>")
+    .appendTo(dom)
+    $.each(tokens, i => {
+        var li = $("<li/>")
+        .appendTo(ul);
+        var name = $("<a/>")
+        .text(tokens[i].name)
+        .addClass(tokens[i].secuId == token ? "uname" : "")
+        .appendTo(li)
+        .on("click", e => {
+            name.text(tokens[i].secuId);
+        });
+        var logged = $("<a/>")
+        .text(tokens[i].when)
+        .appendTo(li);
+        var ip = $("<a/>")
+        .text(tokens[i].ip)
+        .appendTo(li);
+    });
+}
+
+/*
+const gets = mongoose.model("File Gets", {
+    username: String,
+    name: String,
+    fileId: String,
+    when: String,
+    ip: String,
+}, "gets");
+*/
+function populateGetsList(gets, dom) {
+    var ul = $("<ul/>")
+    .appendTo(dom);
+    $.each(gets, i => {
+        var li = $("<li/>")
+        .appendTo(ul);
+        var name = $("<a/>")
+        .text("file name:" + gets[i].name)
+        .appendTo(li);
+        var uname = $("<a/>")
+        .text(gets[i].username)
+        .appendTo(li);
+        var id = $("<a/>")
+        .text("file id:" + gets[i].fileId)
+        .appendTo(li);
+        var when = $("<a/>")
+        .text(gets[i].when)
+        .appendTo(li);
+    })
 }
 
 function getUsers(token) {
@@ -25,8 +79,8 @@ function getUsers(token) {
                     .appendTo(list);
                 var uname = $("<a/>")
                     .addClass("uname")
-                    .html(res.users[i].name)
                     .addClass(res.users[i].role == "admin" ? "admin" : "")
+                    .html(res.users[i].name)
                     .appendTo(liElem);
                 var changePassButton = $("<a/>")
                     .html("Change password")
@@ -117,7 +171,31 @@ function getUsers(token) {
 }
 
 $(() => {
-    var token = getToken();
+    token = getToken();
+
+    $.ajax({
+        url: "/api/admin/getTokens",
+        method: "get",
+        data: {
+            token: token
+        }
+    }).done(res => {
+        populateTokensList(res.tokens.reverse(), $("#logins"));
+    }).fail(err => {
+        console.error("error populating tokens list", err);
+    })
+
+    $.ajax({
+        url: "/api/admin/getGets",
+        method: "get",
+        data: {
+            token: token
+        }
+    }).done(res => {
+        populateGetsList(res.gets.reverse(), $("#file-gets"));
+    }).fail(err => {
+        console.error("error populating gets list", err);
+    })
 
     /* NEW USER FORM SUBMIT */
     $("form#newUser").on("submit", e => {
