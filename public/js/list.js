@@ -44,8 +44,34 @@ function setMode(mode) {
 
 function enterFolder(folder) {
     currentFolder = folder;
+    $("a#new").css("display", (folder == "" ? "none" : "inline"));
     dataReceived(currentName, files);
     $("h3#folderName").text(folder);
+}
+
+function createNewFile() {
+    var fname = prompt("File name?");
+    var tag = currentFolder;
+    var fd = new FormData();
+    var file = new File([""], fname);
+    fd.append("files[]", file);
+    fd.append("token", token);
+    fd.append("tag", tag);
+    $.ajax({
+        method: "post",
+        url: "/api/uploadSingleFile",
+        data: fd,
+        processData: false,
+        contentType: false
+    }).then(data => {
+        if(data.status == "error") {
+            alert(data.error);
+        }else{
+            reloadList();
+        }
+    }).fail(err => {
+        alert(err);
+    })
 }
 
 function generateFoldersList(filesList, dom) {
