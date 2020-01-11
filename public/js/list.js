@@ -69,7 +69,7 @@ function generateFoldersList(filesList, dom) {
 
 function generateGallery(filesList, dom, folder) {
     $.each(filesList, i => {
-        if(filesList[i].tag != folder && folder != "_none")
+        if(filesList[i].tag != folder && folder != "")
             return
         var div = $('<div/>')
         .addClass("gallery-entry")
@@ -99,11 +99,13 @@ function generateGallery(filesList, dom, folder) {
 }
 
 function generateFilesList(filesList, dom, folder) {
+    var ul = $('<ul/>')
+    .appendTo(dom);
     $.each(filesList, i => {
-        if(filesList[i].tag != folder && folder != "_none")
+        if(filesList[i].tag != folder && folder != "")
             return
         var li = $('<li/>')
-        .appendTo(dom);
+        .appendTo(ul);
         var getFileLink = $('<a/>')
         .attr("href", `/api/getFile?token=${token}&id=${filesList[i].secuId}`)
         .text(filesList[i].name + "." + filesList[i].type)
