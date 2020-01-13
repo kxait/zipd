@@ -2,7 +2,7 @@ var token = "";
 
 files = []
 
-currentMode = "list"
+currentMode = ""
 currentFolder = ""
 currentName = ""
 
@@ -40,6 +40,11 @@ function reloadList() {
 function setMode(mode) {
     currentMode = mode;
     dataReceived(currentName, files);
+
+    $("a#gallery").addClass(mode == "gallery" ? "uname" : "")
+    $("a#gallery").removeClass(mode == "list" ? "uname" : "")
+    $("a#list").addClass(mode == "list" ? "uname" : "")
+    $("a#list").removeClass(mode == "gallery" ? "uname" : "")
 }
 
 function enterFolder(folder) {
@@ -94,12 +99,23 @@ function generateFoldersList(filesList, dom) {
 }
 
 function generateGallery(filesList, dom, folder) {
+    var labelToggle = $("<a/>")
+    .appendTo(dom)
+    .text("Toggle labels")
+    .on("click", e => {
+        self = e.target;
+        displ = $("span.gallery-label").css("display");
+        $("span.gallery-label").css("display", displ == "none" ? "block" : "none");
+    })
+    var galleryContainer = $("<div/>")
+    .appendTo(dom)
+    .attr("id", "gallery-container");
     $.each(filesList, i => {
         if(filesList[i].tag != folder && folder != "")
             return
         var div = $('<div/>')
         .addClass("gallery-entry")
-        .appendTo(dom);
+        .appendTo(galleryContainer);
         var link = $('<a/>')
         .attr("href", `/api/getFile?token=${token}&id=${filesList[i].secuId}`)
         .appendTo(div);
@@ -117,9 +133,11 @@ function generateGallery(filesList, dom, folder) {
 
         var title = $('<span/>')
         .text(filesList[i].name)
+        .addClass("gallery-label")
         .appendTo(link)
         var date = $('<span/>')
         .text(filesList[i].uploaded ? new Date(filesList[i].uploaded).toLocaleString() : "No uploaded data")
+        .addClass("gallery-label")
         .appendTo(link);
     })
 }
@@ -193,6 +211,7 @@ function dataReceived(name, files) {
 }
 
 $(() => {
+    setMode("list");
     reloadList();
     $("a#refresh").on("click", e => {
         reloadList();
