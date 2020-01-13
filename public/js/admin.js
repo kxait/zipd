@@ -19,7 +19,8 @@ function populateTokensList(tokens, dom) {
         .appendTo(ul);
         var name = $("<a/>")
         .text(tokens[i].name)
-        .addClass(tokens[i].secuId == token ? "uname" : "")
+        .addClass(tokens[i].secuId == token ? "admin" : "")
+        .addClass(tokens[i].active ? "uname" : "")
         .appendTo(li)
         .on("click", e => {
             name.text(tokens[i].secuId);
@@ -45,21 +46,25 @@ const gets = mongoose.model("File Gets", {
 function populateGetsList(gets, dom) {
     var ul = $("<ul/>")
     .appendTo(dom);
+    var i = 0
     $.each(gets, i => {
-        var li = $("<li/>")
-        .appendTo(ul);
-        var name = $("<a/>")
-        .text("file name:" + gets[i].name)
-        .appendTo(li);
-        var uname = $("<a/>")
-        .text(gets[i].username)
-        .appendTo(li);
-        var id = $("<a/>")
-        .text("file id:" + gets[i].fileId)
-        .appendTo(li);
-        var when = $("<a/>")
-        .text(gets[i].when)
-        .appendTo(li);
+        i++
+        if(i < 50) {
+            var li = $("<li/>")
+            .appendTo(ul);
+            var name = $("<a/>")
+            .text(gets[i].name)
+            .appendTo(li);
+            var uname = $("<a/>")
+            .text(gets[i].username)
+            .appendTo(li);
+            /*var id = $("<a/>")
+            .text("file id:" + gets[i].fileId)
+            .appendTo(li);*/
+            var when = $("<a/>")
+            .text(gets[i].when)
+            .appendTo(li);
+        }
     })
 }
 

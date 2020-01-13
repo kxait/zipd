@@ -18,6 +18,7 @@ var upload = multer({ dest: 'uploads/' });
 /* FOR POST */
 const bodyParser = require('body-parser');
 const parser = bodyParser.urlencoded({ extended: false });
+const jsonParser = bodyParser.json()
 
 /* CONNECT TO MONGO */
 const connStr = process.env.mongo
@@ -86,22 +87,22 @@ function registerApi() {
     
     app.get("/api/getUserRole", require("./lib/api/getUserRole.js"));
 
-    app.post("/api/changePass", parser, require('./lib/api/changePass.js'));
+    app.post("/api/changePass", [parser, jsonParser], require('./lib/api/changePass.js'));
 
-    app.post('/api/getLogin', parser, require('./lib/api/getLogin.js'));
+    app.post('/api/getLogin', [parser, jsonParser], require('./lib/api/getLogin.js'));
 
-    app.post("/api/uploadFile", [upload.array("files[]"), parser], require('./lib/api/uploadFile.js')(Attachment))
+    app.post("/api/uploadFile", [upload.array("files[]"), parser, jsonParser], require('./lib/api/uploadFile.js')(Attachment))
 
-    app.post("/api/uploadSingleFile", [upload.array("files[]"), parser], require('./lib/api/uploadSingleFile.js')(Attachment));
+    app.post("/api/uploadSingleFile", [upload.array("files[]"), parser, jsonParser], require('./lib/api/uploadSingleFile.js')(Attachment));
 
     /* ADMIN */
-    app.post("/api/admin/addUser", parser, require("./lib/api/admin/addUser.js"));
+    app.post("/api/admin/addUser", [parser, jsonParser], require("./lib/api/admin/addUser.js"));
     
     app.get("/api/admin/deleteUser", require("./lib/api/admin/deleteUser.js"));
     
     app.get("/api/admin/wipeUser", require("./lib/api/admin/wipeUser.js")(Attachment));
     
-    app.post("/api/admin/setUserPassword", parser, require("./lib/api/admin/setUserPassword.js"));
+    app.post("/api/admin/setUserPassword", [parser, jsonParser], require("./lib/api/admin/setUserPassword.js"));
     
     app.get("/api/admin/getUserList", require("./lib/api/admin/getUserList.js"));
 
