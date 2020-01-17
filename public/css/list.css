@@ -5,6 +5,11 @@
     flex-wrap: wrap;
 }
 
+#gallery-container img {
+    max-width: 400px;
+    max-height: 400px;
+}
+
 #files.gallery span {
     display: block;
 }

@@ -4,9 +4,6 @@ const mongo = require('mongoose');
 
 /* LOCAL MODULES */
 const models = require('./lib/models.js');
-const { getToken } = require('./lib/common.js');
-
-const md5 = require("blueimp-md5");
 
 /* FILE STUFF */
 const { createModel } = require('mongoose-gridfs');
