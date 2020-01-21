@@ -1,4 +1,30 @@
+// function to set a given theme/color-scheme
+function setTheme(themeName) {
+    localStorage.setItem('theme', themeName);
+    document.body.setAttribute("data-theme", themeName == "dark" ? "dark" : "light");
+    document.getElementById("theme-switch").checked = (themeName == "dark");
+}
+// function to toggle between light and dark theme
+function toggleTheme() {
+   if (localStorage.getItem('theme') === 'dark'){
+       setTheme('light');
+   } else {
+       setTheme('dark');
+   }
+}
+
 $(() => {
+
+    if (localStorage.getItem('theme') === 'dark') {
+        setTheme('dark');
+    } else {
+        setTheme('the-light');
+    }
+
+    document.getElementById("theme-switch").onchange = (ev => {
+        toggleTheme();
+    });
+
     token = getToken();
     if(token == null && window.location.pathname != "/") {
         window.location = "/";

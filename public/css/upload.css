@@ -1,11 +1,11 @@
 main input[type="file"] {
-    background-color: #444;
+    background-color: var(--panel-bg-color);
+    color: var(--text-color);
     padding: 20px;
-    border-radius: 5px;
     width: fit-content;
     width: calc(100% - 40px);
     margin: 5px;
-    color: #ddd;
+    max-width: 500px;
     text-decoration: none;
     border: none;
 }

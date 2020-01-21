@@ -51,7 +51,7 @@ function enterFolder(folder) {
     currentFolder = folder;
     $("a#new").css("display", (folder == "" ? "none" : "inline"));
     dataReceived(currentName, files);
-    $("h3#folderName").text(folder);
+    $("h1#folderName").text(folder == "" ? "folders" : folder);
 }
 
 function createNewFile() {
@@ -88,13 +88,24 @@ function generateFoldersList(filesList, dom) {
     .appendTo(dom)
     .addClass("folders")
     $.each(folders, i => {
-        var folderLink = $('<a/>')
+        var folderLink = $('<div/>')
         .on("click", () => {
             enterFolder(folders[i]);
         })
-        .attr("href", "#")
-        .text(folders[i])
+        .addClass("folder")
         .appendTo(div);
+
+        var folderNo = $('<span/>')
+        .text(folders[i])
+        .addClass("folder")
+        .addClass("folder-name")
+        .appendTo(folderLink);
+
+        var elemsNo = $('<span/>')
+        .text(filesList.filter(a => a.tag == folders[i]).length + " files")
+        .addClass("folder")
+        .addClass("elems-no")
+        .appendTo(folderLink);
     })
 }
 
@@ -142,27 +153,47 @@ function generateGallery(filesList, dom, folder) {
     })
 }
 
+function generateFilesTableHeader(){
+    var tr = $('<tr/>');
+    var thName = $('<th/>')
+    .text("Name")
+    .appendTo(tr);
+    var thDate = $('<th/>')
+    .text("Date")
+    .appendTo(tr);
+    return tr;
+}
+
 function generateFilesList(filesList, dom, folder) {
-    var ul = $('<ul/>')
+    var ul = $('<table/>')
     .appendTo(dom);
+
+    generateFilesTableHeader().appendTo(ul);
+
     $.each(filesList, i => {
         if(filesList[i].tag != folder && folder != "")
             return
-        var li = $('<li/>')
+        var li = $('<tr/>')
         .appendTo(ul);
+        var getFileEntry = $('<td/>')
+        .appendTo(li);
         var getFileLink = $('<a/>')
         .attr("href", `/api/getFile?token=${token}&id=${filesList[i].secuId}`)
         .text(filesList[i].name + "." + filesList[i].type)
-        .appendTo(li);
-        var uploadedDate = $('<a/>')
+        .appendTo(getFileEntry);
+        var uploadedDate = $('<td/>')
         .text(filesList[i].uploaded ? new Date(filesList[i].uploaded).toLocaleString() : "No uploaded data")
         .on("click", (ev) => {
             ev.target.innerText = filesList[i].secuId;
         })
         .appendTo(li);
+        var editEntry = $('<td/>')
+        .appendTo(li);
         var editLink = $('<a/>')
         .text("Edit")
         .attr("href", `/textedit?fid=${filesList[i].secuId}`)
+        .appendTo(editEntry);
+        var deleteFileEntry = $('<td/>')
         .appendTo(li);
         var deleteFileLink = $('<a/>')
         .on("click", e => {
@@ -189,7 +220,7 @@ function generateFilesList(filesList, dom, folder) {
         })
         .text("Delete")
         .attr("href", "#")
-        .appendTo(li);
+        .appendTo(deleteFileEntry);
     });
 }
 

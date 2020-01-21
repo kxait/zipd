@@ -10,11 +10,43 @@
     max-height: 400px;
 }
 
+.folders {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div.folder {
+    padding: 10px;
+    height: 50px;
+    box-shadow: var(--tile-shadow);
+    border-radius: 5px;
+    margin: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.folder span.folder {
+    display: block;
+}
+
+.folder span.folder-name {
+    font-size: 20px;
+}
+
 #files.gallery span {
     display: block;
 }
 
-.folders {
-    margin-top: 30px;
-    margin-left: 30px;
+#files table {
+    width: 100%;
+    padding: 10px;
+    border: 1px dotted gray;
+}
+
+#files td {
+    padding: 5px;
+}
+
+#files table tr:nth-child(even) {
+    background-color: var(--panel-bg-color);
 }

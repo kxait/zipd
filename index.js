@@ -88,7 +88,7 @@ function registerApi() {
 
     app.post('/api/getLogin', [parser, jsonParser], require('./lib/api/getLogin.js'));
 
-    app.post("/api/uploadFile", [upload.array("files[]"), parser, jsonParser], require('./lib/api/uploadFile.js')(Attachment))
+    app.post("/api/uploadFile", [upload.array("files"), parser, jsonParser], require('./lib/api/uploadFile.js')(Attachment))
 
     app.post("/api/uploadSingleFile", [upload.array("files[]"), parser, jsonParser], require('./lib/api/uploadSingleFile.js')(Attachment));
 

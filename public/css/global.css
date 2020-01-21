@@ -1,29 +1,52 @@
 /* GLOBAL */
 
 body {
+    --main-bg-color: #eee;
+    --panel-bg-color: #ddd;
+    --button-hover-color: #ddd;
+    --text-color: #222;
+    --admin-color: magenta;
+    --user-color: skyblue;
+    --header-shadow: 0 -4px 10px;
+    --tile-shadow: 0px 2px 7px rgba(0, 0, 0, 0.2);
+}
+
+body[data-theme="dark"] {
+    --main-bg-color: #222;
+    --panel-bg-color: #333;
+    --button-hover-color: #444;
+    --text-color: #ddd;
+    --admin-color: purple;
+    --user-color: darkblue;
+    --header-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+    --tile-shadow: 0 2px 7px rgba(0, 0, 0, 0.8);
+}
+
+body {
     margin: 0;
-    background-color: #222;
+    background-color: var(--main-bg-color);
     font-family: "Calibri";
-    color: #ddd;
+    color: var(--text-color);
 }
 
 main {
-    background-color: #333;
-    width: 100%;
-    max-width: 1200px;
+    color: var(--text-color);
     margin: 0 auto;
-    padding: 20px;
-    margin-top: 50px;
-    color: white;
+    margin: 20px;
+    width: calc(100%-40px);
     border-radius: 3px;
-    margin-bottom: 50px;
 }
 
 header {
-    
-    width: 70%;
-    max-width: 600px;
+    background-color: var(--main-bg-color);
+    box-shadow: var(--header-shadow);
+    width: calc(100%-10px);
     margin: 0 auto;
+    padding: 5px;
+}
+
+header .right {
+    float: right;
 }
 
 header h1 {
@@ -40,40 +63,36 @@ main h1, main h2 {
 
 a, input[type="submit"], button, input[type="button"] {
     display: inline-block;
-    background-color: #444;
     padding: 5px;
-    border-radius: 5px;
     width: fit-content;
     margin: 5px;
-    color: #ddd;
+    color: var(--text-color);
     text-decoration: none;
     border: none;
+    cursor: pointer;
 }
+
 button, input[type="submit"], input[type="button"] {
+    background-color: var(--panel-bg-color);
     padding: 7px;
 }
 
 a.uname {
-    background-color: darkblue;
+    background-color: var(--user-color);
 }
 
 a.uname.admin {
-    background-color: purple;
-}
-a.uname.shrek {
-    background-color: darkgreen;
+    background-color: var(--admin-color);
 }
 
 a:hover {
-    background-color: #555;
+    background-color: var(--button-hover-color);
 }
 
 input[type="text"], input[type="password"] {
     /*width: 100%;*/
     margin-bottom: 10px;
     border-radius: 5px;
-    color: #ddd;
     padding: 10px;
-    background-color: #444;
     border: none;
 }
