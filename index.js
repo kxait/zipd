@@ -23,6 +23,8 @@ if(!connStr){
     console.error("set environment variable mongo to connect");
     process.exit(-1);
 }
+
+/* //////////////////// MONGO HERE */
 mongo.connect(connStr, {useNewUrlParser: true, useUnifiedTopology: true});
 mongo.connection.once("error", e => {
     console.error("couldnt connect to mongo with url " + connStr, e);
@@ -37,6 +39,7 @@ mongo.connection.once("open", () => {
     registerApi();
     deleteOldTokens();
 })
+/* ///////////////////////////////////
 
 /* EXPRESS CONFIG */
 const app = express();

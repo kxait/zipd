@@ -27,7 +27,7 @@ $(() => {
                 var xhr = $.ajaxSettings.xhr();
                 xhr.upload.onprogress = function (e) {
                     if (e.lengthComputable) {
-                        $("span#message").html("File sending in progress, do not close this page. <br>Progress: " + (Math.round(e.loaded / e.total)*100 + "%"));
+                        $("span#message").html("File sending in progress, do not close this page. <br>Progress: " + (Math.round(e.loaded / e.total * 100) + "%"));
                     }
                 };
                 return xhr;
