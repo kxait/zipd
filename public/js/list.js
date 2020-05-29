@@ -131,7 +131,7 @@ function generateGallery(filesList, dom, folder) {
         .attr("href", `/api/getFile?token=${token}&id=${filesList[i].secuId}`)
         .appendTo(div);
         var img = $('<img/>')
-        .attr("src", `/api/getImageThumbnail?token=${token}&id=${filesList[i].secuId}`)
+        .attr("src", `/api/getSimpleThumbnail?token=${token}&id=${filesList[i].secuId}`)
         .appendTo(link)
         .on("error", (ev) => {
             ev.target.style.display = "none";

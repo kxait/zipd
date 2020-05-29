@@ -81,6 +81,8 @@ function registerApi() {
 
     app.get("/api/getImageThumbnail", require('./lib/api/getImageThumbnail.js').respondWithImageThumbnail(Attachment));
 
+    app.get("/api/getSimpleThumbnail", require('./lib/api/getSimpleThumbnail.js').respondWithImageThumbnail(Attachment));
+
     app.get("/api/deleteLogin", require('./lib/api/deleteLogin.js'));
     
     app.get("/api/deleteFile", require('./lib/api/deleteFile.js')(Attachment));
