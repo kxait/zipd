@@ -79,7 +79,7 @@ function registerApi() {
 
     app.get('/api/getFile', require('./lib/api/getFile.js')(Attachment));
 
-    app.get("/api/getImageThumbnail", require('./lib/api/getImageThumbnail.js').respondWithImageThumbnail(Attachment));
+    //app.get("/api/getImageThumbnail", require('./lib/api/getImageThumbnail.js').respondWithImageThumbnail(Attachment));
 
     app.get("/api/getSimpleThumbnail", require('./lib/api/getSimpleThumbnail.js').respondWithImageThumbnail(Attachment));
 
